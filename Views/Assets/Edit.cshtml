@@ -1,0 +1,35 @@
+﻿@model KovsieAssetTracker.Controllers.Dto.AssetUpdateDto
+@{
+    ViewData["Title"] = "Edit Asset";
+}
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="AssetId" />
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label">Location</label>
+        <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Condition" class="form-label">Condition</label>
+        <select asp-for="Condition" class="form-select">
+            <option>Good</option>
+            <option>Fair</option>
+            <option>Poor</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-kovsie">Save</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,161 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - KovsieAssetTracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap & Font Awesome in wwwroot (or CDN fallback) -->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
+
+    <style>
+        :root{
+            --kovsie-maroon: #7B1623;
+            --kovsie-gold:  #F2C542;
+            --kovsie-text:  #333333;
+        }
+
+        body {
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--kovsie-text);
+            background: linear-gradient(180deg, rgba(123,22,35,0.06), rgba(242,197,66,0.02)) fixed;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: var(--kovsie-maroon);
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            height: 44px;
+        }
+
+        .brand-title {
+            font-weight: 700;
+            letter-spacing: .6px;
+        }
+
+        .content-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 28px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+        .btn-kovsie {
+            background: var(--kovsie-maroon);
+            color: #fff;
+            border: none;
+        }
+
+        .btn-kovsie-outline {
+            background: transparent;
+            color: var(--kovsie-maroon);
+            border: 1px solid var(--kovsie-maroon);
+        }
+
+        .accent {
+            color: var(--kovsie-gold);
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 14px 0;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .asset-thumbnail {
+            max-width: 120px;
+            max-height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .kv-badge {
+            background: var(--kovsie-gold);
+            color: #222;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+    </style>
+
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header class="topbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="~/images/logo.jpg" alt="Kovsie Logo" class="logo me-2" />
+                <div>
+                    <div class="brand-title">Kovsie Asset Tracker</div>
+                    <small>Campus asset tagging & inventory</small>
+                </div>
+            </div>
+
+            <div>
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <span class="me-3">Hello, @User.Identity.Name</span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="btn btn-outline-light btn-sm" asp-controller="Account" asp-action="Login">Login</a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Assets" asp-action="Index">Assets</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Verifications" asp-action="Index">Verifications</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Reports" asp-action="Index">Reports</a></li>
+                </ul>
+
+                <form class="d-flex" asp-controller="Assets" asp-action="Index" method="get">
+                    <input class="form-control me-2" name="tagFilter" placeholder="Search tag or location..." />
+                    <button class="btn btn-kovsie-outline" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="content-panel">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <small>&copy; @DateTime.Now.Year Kovsie Asset Tracker </small>
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/fontawesome/js/all.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

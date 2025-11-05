@@ -1,0 +1,34 @@
+﻿@model KovsieAssetTracker.Models.Asset
+@{
+    ViewData["Title"] = "Asset Details";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        @if (!string.IsNullOrWhiteSpace(Model.PhotoPath))
+        {
+            <img src="@Model.PhotoPath" alt="photo" class="img-fluid rounded" />
+        }
+        else
+        {
+            <div class="border rounded p-5 text-center text-muted">No image</div>
+        }
+    </div>
+    <div class="col-md-8">
+        <h3>@Model.TagId <small class="text-muted">(@Model.Condition)</small></h3>
+        <p>@Model.Description</p>
+        <dl class="row">
+            <dt class="col-sm-3">Location</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+            <dt class="col-sm-3">Verified</dt>
+            <dd class="col-sm-9">@((Model.IsVerified) ? "Yes" : "No")</dd>
+            <dt class="col-sm-3">Created</dt>
+            <dd class="col-sm-9">@Model.CreatedAt.ToString()</dd>
+        </dl>
+
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.AssetId" class="btn btn-outline-secondary me-2"><i class="fa fa-edit"></i> Edit</a>
+            <a asp-action="Index" class="btn btn-kovsie">Back to list</a>
+        </div>
+    </div>
+</div>

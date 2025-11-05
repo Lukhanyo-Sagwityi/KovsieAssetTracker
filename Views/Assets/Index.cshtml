@@ -1,0 +1,79 @@
+﻿@model KovsieAssetTracker.Data.PagedResult<KovsieAssetTracker.Models.Asset>
+@{
+    ViewData["Title"] = "Assets";
+}
+
+<div class="d-flex justify-content-between mb-3">
+    <h4>Assets <span class="kv-badge">@Model.TotalItems</span></h4>
+    <div>
+        <a asp-controller="Assets" asp-action="Create" class="btn btn-outline-secondary me-2"><i class="fa fa-plus"></i> Add</a>
+        <a asp-controller="Reports" asp-action="Index" class="btn btn-kovsie"><i class="fa fa-file-pdf me-1"></i> Generate Report</a>
+    </div>
+</div>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>Tag</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Condition</th>
+            <th>Photo</th>
+            <th>Verified</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in Model.Items)
+        {
+            <tr>
+                <td>@a.TagId</td>
+                <td>@a.Description</td>
+                <td>@a.Location</td>
+                <td>@a.Condition</td>
+                <td>
+                    @{
+                        var imgPath = string.IsNullOrWhiteSpace(a.PhotoPath)
+                        ? Url.Content("~/images/placeholder.svg")
+                        : Url.Content(a.PhotoPath);
+                    }
+                    <img src="@imgPath" alt="Asset photo" style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+
+                </td>
+                <td>
+                    @if (a.IsVerified)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">No</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@a.AssetId" class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></a>
+                    <a asp-action="Edit" asp-route-id="@a.AssetId" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit"></i></a>
+                    <form asp-action="Delete" asp-route-id="@a.AssetId" method="post" class="d-inline" onsubmit="return confirm('Delete this asset?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination (1..TotalPages but capped to 3 in backend) -->
+<nav>
+    <ul class="pagination">
+        @{
+            int current = Model.PageNumber;
+            int total = Model.TotalPages;
+            for (int i = 1; i <= total; i++)
+            {
+                <li class="page-item @(i == current ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+                </li>
+            }
+        }
+    </ul>
+</nav>

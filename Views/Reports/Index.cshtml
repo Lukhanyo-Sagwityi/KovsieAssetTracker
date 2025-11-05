@@ -1,0 +1,14 @@
+﻿@if (TempData["PdfError"] != null)
+{
+    <div class="alert alert-danger">@TempData["PdfError"]</div>
+}
+<form asp-action="AssetReport" method="get">
+    <div class="row">
+        <div class="col-md-4">
+            <input name="location" class="form-control" placeholder="Filter by location (optional)" />
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-kovsie">Generate PDF</button>
+        </div>
+    </div>
+</form>

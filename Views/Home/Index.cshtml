@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+<div class="row">
+    <div class="col-md-7">
+        <h1 class="mb-3">Kovsie Asset Tracker</h1>
+        <p class="lead">Scan. Upload. Verify. Generate reports — all in one place.</p>
+
+        <p>
+            <a asp-controller="Assets" asp-action="Index" class="btn btn-kovsie btn-lg me-2">
+                <i class="fa fa-laptop me-2"></i> Open Dashboard
+            </a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary btn-lg">
+                <i class="fa fa-sign-in-alt me-2"></i> Login
+            </a>
+        </p>
+    </div>
+
+    <div class="col-md-5 text-center">
+        <img src="~/images/home-illustration.png" alt="Illustration" class="img-fluid" style="max-height:260px" />
+    </div>
+</div>
